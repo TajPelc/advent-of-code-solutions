@@ -12,23 +12,11 @@ class Box {
 		this.height = parseInt(h);
 	}
 
-	getBottomSide() {
-		return this.length * this.width;
-	}
-
-	getLeftSide() {
-		return this.width * this.height;
-	}
-
-	getFrontSide() {
-		return this.height * this.length;
-	}
-
 	getBaseSides() {
 		return [
-			this.getBottomSide(),
-			this.getLeftSide(),
-			this.getFrontSide()
+			this.length * this.width,
+			this.width * this.height,
+			this.height * this.length
 		];
 	}
 
