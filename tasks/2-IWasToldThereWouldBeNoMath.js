@@ -1,16 +1,15 @@
 #!/usr/bin/env node
 "use strict";
 
-let _ = require('underscore'),
-	Promise = require('bluebird'),
+let Promise = require('bluebird'),
 	lineReader = require('line-reader'),
 	eachLine = Promise.promisify(lineReader.eachLine);
 
 class Box {
 	constructor(l, w, h) {
-		this.length = l;
-		this.width  = w;
-		this.height = h;
+		this.length = parseInt(l);
+		this.width  = parseInt(w);
+		this.height = parseInt(h);
 	}
 
 	getBottomSide() {
@@ -42,29 +41,29 @@ class Box {
 	}
 
 	getSmallestSide() {
-		return _.min(this.getBaseSides());
+		return Math.min(...this.getBaseSides());
 	}
 
 	getBiggestSide() {
-		return _.max(this.getBaseSides());
+		return Math.max(...this.getBaseSides());
 	}
 
 	getTwoSmallestDimensions() {
-		return this.getDimensions().sort().splice(0,2);
+		return this.getDimensions().sort((x,y) => x > y ? 1 : -1).slice(0,2);
 	}
 }
 
 class BoxCalculator {
 	static calculateVolume(Box) {
-		return _.reduce(Box.getDimensions(), (x, y) => x * y);
+		return Box.getDimensions().reduce((x, y) => x * y);
 	}
 
 	static calculateArea(Box) {
-		return _(_(Box.getBaseSides()).map((x) => x * 2)).reduce((x, y) => x + y);
+		return Box.getBaseSides().map((x) => x * 2).reduce((x, y) => x + y);
 	}
 
 	static calculateSmallestCircumference(Box) {
-		return _(_(Box.getTwoSmallestDimensions()).map((x) => x * 2)).reduce((x, y ) => x + y)
+		return Box.getTwoSmallestDimensions().map((x) => x * 2).reduce((x, y ) => x + y)
 	}
 
 	static calculateWrappingPaperFor(Box) {
